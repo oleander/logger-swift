@@ -1,7 +1,6 @@
 // https://github.com/klauscfhq/signale
 import Foundation
 import Rainbow
-import SwiftyJSON
 
 public class Logger {
   let colors: [Color] = [
@@ -145,10 +144,6 @@ public class Logger {
 
   private func stringify<T: CustomStringConvertible>(_ message: T) -> String {
     return String(describing: message)
-  }
-
-  private func stringify<T>(_ message: [T: Any]) -> String {
-    return JSON(message).description
   }
 
   private func stringify(_ message: Any) -> String {
