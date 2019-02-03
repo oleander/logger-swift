@@ -140,7 +140,7 @@ public class Logger {
       "[".dim + level.tag + "]".dim,
       " ",
       message.map(stringify).joined(separator: " ")
-    ].joined(separator: ""))
+    ].joined(separator: "")
 
     switch level {
     case .error:
