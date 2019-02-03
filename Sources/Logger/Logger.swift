@@ -1,4 +1,10 @@
 // https://github.com/klauscfhq/signale
+import SwiftyJSON
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin
+#endif
 import Foundation
 import Rainbow
 
@@ -130,12 +136,18 @@ public class Logger {
 
   private func output(_ level: Level, _ message: [Any]) {
     guard level >= self.level else { return }
-
-    print([
+    let data = [
       "[".dim + level.tag + "]".dim,
       " ",
       message.map(stringify).joined(separator: " ")
     ].joined(separator: ""))
+
+    switch level {
+    case .error:
+      fputs(data + "\n", stderr)
+    default:
+      fputs(data + "\n", stdout)
+    }
   }
 
   private func stringify(_ error: Error) -> String {
@@ -147,6 +159,7 @@ public class Logger {
   }
 
   private func stringify(_ message: Any) -> String {
+    JSON(message).rawString()
     return String(describing: message)
   }
 }
