@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:4.2
 
 import PackageDescription
 
@@ -21,6 +21,6 @@ let package = Package(
         dependencies: ["Rainbow"]),
       .testTarget(
         name: "LoggerTests",
-        dependencies: ["Logger", "Quick", "Nimble"]),
+        dependencies: ["Logger", "Quick", "Nimble"])
     ]
 )
