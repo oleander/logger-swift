@@ -5,7 +5,7 @@
     import Darwin
 #endif
 import Foundation
-import Rainbow
+import RainbowSwift
 
 public class Logger {
   let colors: [Color] = [

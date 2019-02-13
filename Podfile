@@ -1,12 +1,16 @@
-
 platform :osx, "10.12"
-target "Logger" do
-  pod "RainbowSwift"
-  use_frameworks!
+use_frameworks!
 
-  target "LoggerTests" do
+target "App" do
+  target "Logger" do
     inherit! :search_paths
-    pod "Nimble"
-    pod "Quick"
+    pod "RainbowSwift"
   end
 end
+
+  # target "LoggerTests" do
+  #   inherit! :search_paths
+  #   pod "Nimble"
+  #   pod "Quick"
+  # end
+# end

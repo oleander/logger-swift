@@ -1,5 +1,5 @@
 import Foundation
-import Rainbow
+import RainbowSwift
 
 public enum Level: Int, Comparable, CustomStringConvertible {
   case verbose = 0

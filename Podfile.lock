@@ -1,24 +1,16 @@
 PODS:
-  - Nimble (7.3.4)
-  - Quick (1.3.4)
   - RainbowSwift (3.1.4)
 
 DEPENDENCIES:
-  - Nimble
-  - Quick
   - RainbowSwift
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - Nimble
-    - Quick
     - RainbowSwift
 
 SPEC CHECKSUMS:
-  Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
-  Quick: f4f7f063c524394c73ed93ac70983c609805d481
   RainbowSwift: 1cf3693f51ca408950fcd8ee7957fa5c8e269d43
 
-PODFILE CHECKSUM: a801f3d95efff743f0067c7e4f2b14fb26bab2e4
+PODFILE CHECKSUM: 0b1ce11b4bad465c6751f071ff5043e5968ce301
 
 COCOAPODS: 1.6.0

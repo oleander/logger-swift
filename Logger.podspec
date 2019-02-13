@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
 
   s.test_spec "LoggerTests" do |test_spec|
     test_spec.source_files = "Tests/LoggerTests/*.swift"
-    test_spec.dependency "Nimble", "~> 7.0.0"
+    test_spec.dependency "Nimble", "~> 7.3.4"
     test_spec.dependency "Quick", "~> 1.2.0"
   end
 
