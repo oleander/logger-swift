@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "Logger"
-  s.version      = "1.0"
+  s.version      = "1.1"
   s.authors      = "Linus Oleander"
   s.homepage     = "https://github.com/oleander/logger-swift"
   s.summary      = "Swift log library"
@@ -14,6 +14,7 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = "10.10"
 
   s.swift_version = "4.2"
+  s.static_framework = true
   s.source_files = "Sources/Logger/**/*.swift"
 
   s.test_spec "LoggerTests" do |test_spec|
