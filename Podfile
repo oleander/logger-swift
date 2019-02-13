@@ -1,7 +1,7 @@
-platform :osx, "10.10"
 
+platform :osx, "10.12"
 target "Logger" do
-  pod "RainbowSwift", "~> 3.1.4"
+  pod "RainbowSwift"
   use_frameworks!
 
   target "LoggerTests" do

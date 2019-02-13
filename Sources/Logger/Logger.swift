@@ -1,5 +1,4 @@
 // https://github.com/klauscfhq/signale
-import SwiftyJSON
 #if os(Linux)
     import Glibc
 #else
@@ -159,7 +158,6 @@ public class Logger {
   }
 
   private func stringify(_ message: Any) -> String {
-    JSON(message).rawString()
     return String(describing: message)
   }
 }

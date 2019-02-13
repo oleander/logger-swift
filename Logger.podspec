@@ -10,16 +10,17 @@ Pod::Spec.new do |s|
     tag: s.version
   }
 
-  s.license      = { type: "MIT" }
+  s.license      = { type: "MIT", file: "LICENSE" }
+  s.osx.deployment_target = "10.10"
 
   s.swift_version = "4.2"
-  s.source_files = "Logger/**/*.swift"
+  s.source_files = "Sources/Logger/**/*.swift"
 
-  s.test_spec "Tests" do |test_spec|
-    test_spec.source_files = "LoggerTests/*.swift*"
-    test_spec.dependency "Nimble" #, "~> 7.0.2"
-    test_spec.dependency "Quick" #, "~> 1.2.0"
+  s.test_spec "LoggerTests" do |test_spec|
+    test_spec.source_files = "Tests/LoggerTests/*.swift"
+    test_spec.dependency "Nimble", "~> 7.0.0"
+    test_spec.dependency "Quick", "~> 1.2.0"
   end
 
-  s.dependency "RainbowSwift"
+  s.dependency "RainbowSwift", "~> 3.1.4"
 end
