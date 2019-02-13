@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "Logger"
-  s.version      = "1.1"
+  s.version      = "1.2"
   s.authors      = "Linus Oleander"
   s.homepage     = "https://github.com/oleander/logger-swift"
   s.summary      = "Swift log library"
