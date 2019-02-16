@@ -3,6 +3,6 @@ language: objective-c
 before_install:
   - brew update
 script:
-  - brew install https://gist.githubusercontent.com/oleander/046aa9f22efe9d42157268e2ea6a34bd/raw/dec0931e9bdf570da054a7781a69a4ac2fdca265/Couchsurfing.rb
+  - brew install https://gist.githubusercontent.com/oleander/55b2426507d39b63b053b074d07e9f28/raw/92ac944b12fa3446c7c515736ce6d1da93cc066f/Couchsurfing.rb
   - couchsurfing help
   - cs-location
