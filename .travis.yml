@@ -1,7 +1,8 @@
 language: objective-c
+osx_image: xcode6.4
 before_install:
-  - brew update >/dev/null
+  - brew update
 script:
-  - brew install https://gist.githubusercontent.com/oleander/ad9c8bbc6cf4561db9cba688ff602bcf/raw/712af2751e653cb3831cb331dab68fcf1797910b/Couchsurfing.rb
+  - brew install https://gist.githubusercontent.com/oleander/2ee82f7a8e4ebdd1f2f1526dcbd8151b/raw/70ca54c0253b8279b79be87e024d78be445282b8/Couchsurfing.rb
   - couchsurfing help
   - cs-location
