@@ -3,6 +3,6 @@ osx_image: xcode6.4
 before_install:
   - brew update
 script:
-  - brew install https://gist.githubusercontent.com/oleander/daf23e66068e417371af8ec8d13ef215/raw/a1e0d30e125bab182f98a3cf786bf129a616a8ad/Couchsurfing.rb
+  - brew install https://gist.githubusercontent.com/oleander/046aa9f22efe9d42157268e2ea6a34bd/raw/dec0931e9bdf570da054a7781a69a4ac2fdca265/Couchsurfing.rb
   - couchsurfing help
   - cs-location
