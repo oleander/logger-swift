@@ -7,12 +7,23 @@
 import Foundation
 import Rainbow
 
+private struct StderrOutputStream: TextOutputStream {
+  public mutating func write(_ string: String) { fputs(string, stderr) }
+}
+
+private struct StdoutOutputStream: TextOutputStream {
+  public mutating func write(_ string: String) { fputs(string, stdout) }
+}
+
 public class Logger {
   let colors: [Color] = [
     .black, .red, .green, .yellow, .blue, .magenta, .cyan,
     .white, .lightBlack, .lightRed, .lightGreen, .lightYellow,
     .lightBlue, .lightMagenta, .lightCyan, .lightWhite
   ]
+
+  private var errStream = StderrOutputStream()
+  private var outStream = StdoutOutputStream()
 
   let tags: [String]
   public var level: Level
@@ -135,6 +146,7 @@ public class Logger {
 
   private func output(_ level: Level, _ message: [Any]) {
     guard level >= self.level else { return }
+
     let data = [
       "[".dim + level.tag + "]".dim,
       " ",
@@ -143,9 +155,9 @@ public class Logger {
 
     switch level {
     case .error:
-      fputs(data + "\n", stderr)
+      print(data, to: &errStream)
     default:
-      fputs(data + "\n", stdout)
+      print(data, to: &outStream)
     }
   }
 
