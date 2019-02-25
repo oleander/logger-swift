@@ -162,7 +162,7 @@ public class Logger {
       var list = ListLog()
       block(list)
       list.output { row in
-        output(.debug, [row], status: false)
+        output(.debug, [row], status: false, indentation: 2)
       }
     }
 
@@ -192,7 +192,7 @@ public class Logger {
       var list = ListLog()
       block(list)
       list.output { row in
-        output(.info, [row], status: false)
+        output(.info, [row], status: false, indentation: 2)
       }
     }
 
@@ -209,7 +209,7 @@ public class Logger {
     output(.error, message)
   }
 
-  private func output(_ level: Level, _ message: [Any], tags: [String] = [], blink: Bool = false, tag: String? = nil, icon: Icon? = nil, status: Bool = true) {
+  private func output(_ level: Level, _ message: [Any], tags: [String] = [], blink: Bool = false, tag: String? = nil, icon: Icon? = nil, status: Bool = true, indentation extraIndentation: Int = 0) {
     guard level >= self.level else {
       return
     }
@@ -239,13 +239,14 @@ public class Logger {
       params.append(" ")
     }
 
-    switch indentation {
+    let allIndent = indentation + extraIndentation
+    switch allIndent {
     case 0:
       break
     case 1:
       params.append(" ")
     default:
-      params.append(String(repeating: "  ", count: indentation))
+      params.append(String(repeating: "  ", count: allIndent))
     }
 
     if time {
