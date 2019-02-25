@@ -121,9 +121,16 @@ public class Logger {
   }
 
   @discardableResult
-  public func debug(_ message: Any..., tag: String? = nil) -> Logger {
+  public func debug(_ message: Any..., tag: String? = nil, block: ((Logger) -> Void)? = nil) -> Logger {
     output(.debug, message)
-    return Logger(level, tags: tags, prevLevel: .debug)
+
+    let newLogger = Logger(level, tags: tags, prevLevel: .debug)
+
+    if let block = block {
+      block(newLogger)
+    }
+
+    return newLogger
   }
 
   public func abort(_ message: Any...) -> Never {
@@ -141,9 +148,15 @@ public class Logger {
   }
 
   @discardableResult
-  public func info(_ message: Any..., tag: String? = nil, icon: Icon? = nil) -> Logger {
+  public func info(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((Logger) -> Void)? = nil) -> Logger {
     output(.info, message, tag: tag, icon: icon)
-    return Logger(level, tags: tags, prevLevel: .info)
+    let newLogger = Logger(level, tags: tags, prevLevel: .info)
+
+    if let block = block {
+      block(newLogger)
+    }
+
+    return newLogger
   }
 
   public func kv(_ key: Any, _ value: Any) {
