@@ -90,6 +90,10 @@ public class Logger {
     return .info
   }
 
+  public func ln() {
+    plainStdout(String(repeating: "-", count: 60))
+  }
+
   public var inDebugMode: Bool {
     return level <= .debug
   }
@@ -202,10 +206,18 @@ public class Logger {
 
     switch level {
     case .info:
-      print(data, to: &outStream)
+      plainStdout(data)
     default:
-      print(data, to: &errStream)
+      plainStderr(data)
     }
+  }
+
+  private func plainStdout(_ data: String) {
+    print(data, to: &outStream)
+  }
+
+  private func plainStderr(_ data: String) {
+    print(data, to: &errStream)
   }
 
   private func stringify(_ error: Error) -> String {

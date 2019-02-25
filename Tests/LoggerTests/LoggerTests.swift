@@ -76,5 +76,13 @@ class LoggerTests: QuickSpec {
         log.info("It has a heart", icon: .heart)
       }
     }
+
+    describe("line") {
+      it("prints") {
+        log.info("This is before the line")
+        log.ln()
+        log.info("This is after the line")
+      }
+    }
   }
 }
