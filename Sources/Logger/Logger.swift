@@ -105,6 +105,12 @@ public class Logger {
       }
     }
 
+    for argument in CommandLine.arguments {
+      if argument == "--verbose" {
+        return .verbose
+      }
+    }
+
     for key in ["INFO", "info"] {
       if ProcessInfo.processInfo.environment[key] != nil {
         return .info
@@ -217,8 +223,21 @@ public class Logger {
   //   output(level, [indent + res.dim], status: false)
   // }
 
-  public func error(_ message: Any..., tag: String? = nil) {
+  @discardableResult
+  public func error(_ message: Any..., tag: String? = nil, block: ((ListLog) -> Void)? = nil) -> Logger {
     output(.error, message)
+
+    let newLogger = Logger(level, tags: tags, prevLevel: .error)
+
+    if let block = block {
+      let list = ListLog()
+      block(list)
+      list.output { row in
+        output(.error, [row], status: false, indentation: 1)
+      }
+    }
+
+    return newLogger
   }
 
   private func output(_ level: Level, _ message: [Any], tags: [String] = [], blink: Bool = false, tag: String? = nil, icon: Icon? = nil, status: Bool = true, indentation extraIndentation: Int = 0) {
