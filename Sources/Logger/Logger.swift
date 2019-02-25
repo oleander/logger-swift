@@ -148,8 +148,20 @@ public class Logger {
     output(.warn, message, tags: ["TODO"])
   }
 
-  public func verbose(_ message: Any..., tag: String? = nil) {
-    output(.verbose, message)
+  @discardableResult
+  public func verbose(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) -> Logger {
+    output(.verbose, message, tag: tag, icon: icon)
+    let newLogger = Logger(level, tags: tags, prevLevel: .verbose)
+
+    if let block = block {
+      let list = ListLog()
+      block(list)
+      list.output { row in
+        output(.verbose, [row], status: false, indentation: 1)
+      }
+    }
+
+    return newLogger
   }
 
   @discardableResult
