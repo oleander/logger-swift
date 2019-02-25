@@ -153,25 +153,27 @@ public class Logger {
     formatter.dateFormat = "HH:mm:ss"
     var params = [String]()
 
-    switch level {
-    case .info:
-      params.append("●".lightGreen)
-    case .warn:
-      params.append("●".lightYellow)
-    case .error:
-      params.append("●".lightRed)
-    case .bug:
-      params.append("●".red)
-    case .debug:
-      params.append("●".lightBlue)
-    case .verbose:
-      params.append("●".lightCyan)
-    }
-
     if time {
       let raw = formatter.string(from: Date())
       params.append("[\(raw)]".dim)
     }
+
+    switch level {
+    case .info:
+      params.append("●".green)
+    case .warn:
+      params.append("●".yellow)
+    case .error:
+      params.append("●".red)
+    case .bug:
+      params.append("●".red)
+    case .debug:
+      params.append("●".blue)
+    case .verbose:
+      params.append("●".cyan)
+    }
+
+    // params.append("›".dim)
 
     params.append(message.map(stringify).joined(separator: " "))
 
