@@ -131,7 +131,6 @@ public class Logger {
 
     var params = [String]()
 
-    params.append(String(repeating: "   ", count: indentation))
 
     switch level {
     case .info:
@@ -146,6 +145,15 @@ public class Logger {
       params.append("●".blue)
     case .verbose:
       params.append("●".cyan)
+    }
+
+    switch indentation {
+    case 0:
+      break
+    case 1:
+      params.append(" ")
+    default:
+      params.append(String(repeating: "  ", count: indentation))
     }
 
     if time {
