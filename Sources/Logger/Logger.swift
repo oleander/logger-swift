@@ -25,67 +25,49 @@ public class Logger {
     self.tags = tags
     self.time = time
 
+    if let level = level {
+      self.level = level
+    } else {
+      self.level = Logger.preLevel
+    }
+  }
+
+  private static var preLevel: Level {
     for key in ["DEBUG", "debug"] {
       if ProcessInfo.processInfo.environment[key] != nil {
-        self.level = .debug
-        return
+        return .debug
       }
     }
 
-    if let level = level {
-      self.level = level
-      return
-    } else {
-      for key in ["DEBUG", "debug"] {
-        if ProcessInfo.processInfo.environment[key] != nil {
-          self.level = .debug
-          warn("Found \(key) as env variable, use \(self.level) level")
-          return
-        }
+    for key in ["VERBOSE", "verbose"] {
+      if ProcessInfo.processInfo.environment[key] != nil {
+        return .verbose
       }
+    }
 
-      for key in ["VERBOSE", "verbose"] {
-        if ProcessInfo.processInfo.environment[key] != nil {
-          self.level = .verbose
-          warn("Found \(key) as env variable, use \(self.level) level")
-          return
-        }
+    for argument in CommandLine.arguments {
+      if argument == "--debug" {
+        return .debug
       }
+    }
 
-      for argument in CommandLine.arguments {
-        if argument == "--debug" {
-          self.level = .debug
-          warn("Found \(argument) as argument, use \(self.level) level")
-          return
-        }
-      }
-
-      for key in ["INFO", "info"] {
-        if ProcessInfo.processInfo.environment[key] != nil {
-          self.level = .info
-          warn("Found \(key) as env variable, use \(self.level) level")
-          return
-        }
+    for key in ["INFO", "info"] {
+      if ProcessInfo.processInfo.environment[key] != nil {
+        return .info
       }
     }
 
     if CommandLine.arguments.count >= 2 {
       if CommandLine.arguments[1].contains("/debug/") {
-        self.level = .debug
-        warn("Found /debug/ in path, use \(self.level) level")
+        return .debug
       } else if CommandLine.arguments[1].contains(".xctest") {
-        self.level = .verbose
-        warn("Found .xctest in path, use \(self.level) level")
+        return .verbose
       } else {
-        self.level = .info
+        return .info
       }
-    } else {
-      self.level = .info
     }
 
-    if inDebugMode {
-      warn("In debug mode")
-    }
+    return .info
   }
 
   public var inDebugMode: Bool {
