@@ -276,11 +276,11 @@ public class Logger {
       case .info:
         params.append("●".lightBlue)
       case .warn:
-        params.append("●".lightYellow)
+        params.append("●".yellow)
       case .error:
-        params.append("●".lightRed)
+        params.append("●".red)
       case .bug:
-        params.append("●".lightRed)
+        params.append("●".red)
       case .debug:
         params.append("●".lightMagenta)
       case .verbose:
