@@ -24,24 +24,6 @@ class LoggerTests: QuickSpec {
       }
     }
 
-    describe("tags") {
-      it("prints") {
-        let log = Logger(.debug, tags: ["a", "b", "c"])
-        log.info("This is info")
-        log.warn("This is warn")
-        log.error("This is error")
-        log.debug("This is debug")
-      }
-
-      it("does not print") {
-        let log = Logger(.info, tags: ["a", "b", "c"])
-        log.info("This is info")
-        log.warn("This is warn")
-        log.error("This is error")
-        log.debug("This is debug")
-      }
-    }
-
     describe("blink") {
       it("blinks") {
         log.blink("This is blink!")
@@ -113,6 +95,24 @@ class LoggerTests: QuickSpec {
           list.kv("Not visible", "Value 2")
           list.kv("Not visible", "Value 3")
         }
+      }
+    }
+
+    describe("tags") {
+      it("prints") {
+        let log = Logger(.debug, tags: ["A", "B", "C"])
+        log.info("This is info")
+        log.warn("This is warn")
+        log.error("This is error")
+        log.debug("This is debug")
+      }
+
+      it("does not print") {
+        let log = Logger(.info, tags: ["a", "b", "c"])
+        log.info("This is info")
+        log.warn("This is warn")
+        log.error("This is error")
+        log.debug("This is debug")
       }
     }
   }
