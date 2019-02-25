@@ -41,5 +41,11 @@ class LoggerTests: QuickSpec {
         log.debug("This is debug")
       }
     }
+
+    describe("blink") {
+      it("blinks") {
+        log.blink("This is blink!")
+      }
+    }
   }
 }

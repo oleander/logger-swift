@@ -101,7 +101,7 @@ public class Logger {
   }
 
   public func blink(_ message: Any...) {
-    output(.warn, ["⚠".blink.red] + message)
+    output(.warn, message, blink: true)
   }
 
   public func todo(_ message: Any...) {
@@ -138,7 +138,7 @@ public class Logger {
     output(.error, message)
   }
 
-  private func output(_ level: Level, _ message: [Any]) {
+  private func output(_ level: Level, _ message: [Any], blink: Bool = false) {
     guard level >= self.level else { return }
     let formatter = DateFormatter()
 
@@ -167,6 +167,10 @@ public class Logger {
       params.append("●".blue)
     case .verbose:
       params.append("●".cyan)
+    }
+
+    if blink {
+      params[params.count - 1] = params.last!.blink
     }
 
     // params.append("›".dim)
