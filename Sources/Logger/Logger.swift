@@ -69,7 +69,26 @@ public class Logger {
   private let indentation: Int
   private let prevLevel: Level?
 
-  public init(_ level: Level? = nil, time: Bool = false, tags: [String] = [], indentation: Int = 0, prevLevel: Level? = nil) {
+  convenience public init(
+    _ level: Level? = nil,
+    time: Bool = false,
+    tag: String? = nil,
+    indentation: Int = 0) {
+
+    var tags = [String]()
+    if let tag = tag {
+      tags.append(tag)
+    }
+
+    self.init(level, time: time, tags: tags, indentation: indentation)
+  }
+
+  public init(
+    _ level: Level? = nil,
+    time: Bool = false,
+    tags: [String] = [],
+    indentation: Int = 0,
+    prevLevel: Level? = nil) {
     self.tags = tags
     self.time = time
     self.indentation = indentation
