@@ -53,5 +53,21 @@ class LoggerTests: QuickSpec {
         log.todo("Hello!")
       }
     }
+
+    describe("indentation") {
+      it("prints") {
+        let log = Logger()
+        log.info("Indent 1")
+        let log1 = log.indent()
+        log1.info("Indent 2")
+        let log2 = log1.indent()
+        log2.info("Indent 3")
+        let log3 = log2.indent()
+        log3.info("Indent 4")
+        log2.info("Indent 3")
+        log2.info("Indent 3")
+        log1.info("Indent 2")
+      }
+    }
   }
 }

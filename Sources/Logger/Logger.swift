@@ -20,16 +20,22 @@ public class Logger {
   private let tags: [String]
   public var level: Level
   private let time: Bool
+  private let indentation: Int
 
-  public init(_ level: Level? = nil, time: Bool = false, tags: [String] = []) {
+  public init(_ level: Level? = nil, time: Bool = false, tags: [String] = [], indentation: Int = 0) {
     self.tags = tags
     self.time = time
+    self.indentation = indentation
 
     if let level = level {
       self.level = level
     } else {
       self.level = Logger.preLevel
     }
+  }
+
+  public func indent() -> Logger {
+    return Logger(level, time: time, tags: tags, indentation: indentation + 1)
   }
 
   private static var preLevel: Level {
@@ -124,6 +130,8 @@ public class Logger {
     guard level >= self.level else { return }
 
     var params = [String]()
+
+    params.append(String(repeating: "   ", count: indentation))
 
     switch level {
     case .info:
