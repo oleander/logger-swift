@@ -7,6 +7,38 @@
 import Foundation
 import Rainbow
 
+public struct ListItem {
+  public let key: String
+  public let value: Any
+
+  public var count: Int {
+    return key.count
+  }
+
+  public func formatted(indent: Int) -> String {
+    let paddedStr = key.padding(toLength: indent, withPad: " ", startingAt: 0)
+    return paddedStr + ": " + String(describing: value)
+  }
+}
+
+public class ListLog {
+  private var items: [ListItem] = []
+
+  public func kv(_ key: String, _ value: Any) {
+    items.append(ListItem(key: key, value: value))
+  }
+
+  public func output(block: (String) -> Void) {
+    if items.isEmpty { return }
+
+    let longestKeyLength = items.sorted { $0.count > $1.count }.first!.count
+
+    for item in items {
+      block(item.formatted(indent: longestKeyLength).dim)
+    }
+  }
+}
+
 public class Logger {
   public enum Icon: String {
     case done = "✔"
@@ -121,13 +153,17 @@ public class Logger {
   }
 
   @discardableResult
-  public func debug(_ message: Any..., tag: String? = nil, block: ((Logger) -> Void)? = nil) -> Logger {
+  public func debug(_ message: Any..., tag: String? = nil, block: ((ListLog) -> Void)? = nil) -> Logger {
     output(.debug, message)
 
     let newLogger = Logger(level, tags: tags, prevLevel: .debug)
 
     if let block = block {
-      block(newLogger)
+      var list = ListLog()
+      block(list)
+      list.output { row in
+        output(.debug, [row], status: false)
+      }
     }
 
     return newLogger
@@ -148,22 +184,26 @@ public class Logger {
   }
 
   @discardableResult
-  public func info(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((Logger) -> Void)? = nil) -> Logger {
+  public func info(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) -> Logger {
     output(.info, message, tag: tag, icon: icon)
     let newLogger = Logger(level, tags: tags, prevLevel: .info)
 
     if let block = block {
-      block(newLogger)
+      var list = ListLog()
+      block(list)
+      list.output { row in
+        output(.info, [row], status: false)
+      }
     }
 
     return newLogger
   }
 
-  public func kv(_ key: Any, _ value: Any) {
-    let indent = String(repeating: " ", count: 3)
-    let res = stringify(key) + ": " + stringifyWithColor(value).italic
-    output(level, [indent + res.dim], status: false)
-  }
+  // public func kv(_ key: Any, _ value: Any) {
+  //   let indent = String(repeating: " ", count: 3)
+  //   let res = stringify(key) + ": " + stringifyWithColor(value).italic
+  //   output(level, [indent + res.dim], status: false)
+  // }
 
   public func error(_ message: Any..., tag: String? = nil) {
     output(.error, message)
