@@ -172,7 +172,7 @@ public class Logger {
     case .verbose:
       params.append("●".lightCyan)
     }
-    // params.append("[".dim + level.tag + "]".dim)
+    
     params.append(message.map(stringify).joined(separator: " "))
 
     let data = params.joined(separator: " ")
