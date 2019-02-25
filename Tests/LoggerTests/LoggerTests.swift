@@ -47,5 +47,11 @@ class LoggerTests: QuickSpec {
         log.blink("This is blink!")
       }
     }
+
+    describe("TODO") {
+      it("prints") {
+        log.todo("Hello!")
+      }
+    }
   }
 }

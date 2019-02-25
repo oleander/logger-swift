@@ -1,8 +1,2 @@
-language: objective-c
-osx_image: xcode6.4
-before_install:
-  - brew update
-script:
-  - brew install https://gist.githubusercontent.com/oleander/55b2426507d39b63b053b074d07e9f28/raw/92ac944b12fa3446c7c515736ce6d1da93cc066f/Couchsurfing.rb
-  - couchsurfing help
-  - cs-location
+language: swift
+script: swift test

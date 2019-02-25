@@ -87,7 +87,7 @@ public class Logger {
   }
 
   public func todo(_ message: Any...) {
-    output(.warn, ["TODO"] + message)
+    output(.warn, message, tags: ["TODO"])
   }
 
   public func verbose(_ message: Any..., tag: String? = nil) {
@@ -120,7 +120,7 @@ public class Logger {
     output(.error, message)
   }
 
-  private func output(_ level: Level, _ message: [Any], blink: Bool = false) {
+  private func output(_ level: Level, _ message: [Any], tags: [String] = [], blink: Bool = false) {
     guard level >= self.level else { return }
     let formatter = DateFormatter()
 
@@ -130,10 +130,6 @@ public class Logger {
     if time {
       let raw = formatter.string(from: Date())
       params.append("[\(raw)]".dim)
-    }
-
-    if level <= .debug && !tags.isEmpty {
-      params.append("[\(tags.joined(separator: " "))]".dim)
     }
 
     switch level {
@@ -149,6 +145,12 @@ public class Logger {
       params.append("●".blue)
     case .verbose:
       params.append("●".cyan)
+    }
+
+    let allTags = self.tags + tags
+
+    if level <= .debug && !allTags.isEmpty {
+      params.append("\(allTags.joined(separator: " › "))".dim)
     }
 
     if blink {
