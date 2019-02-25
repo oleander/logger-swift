@@ -161,8 +161,8 @@ public class Logger {
 
   public func kv(_ key: Any, _ value: Any) {
     let indent = String(repeating: " ", count: 3)
-    let res = stringify(key) + ": " + stringify(value).italic
-    output(.info, [indent + res.dim], status: false)
+    let res = stringify(key) + ": " + stringifyWithColor(value).italic
+    output(level, [indent + res.dim], status: false)
   }
 
   public func error(_ message: Any..., tag: String? = nil) {
@@ -255,6 +255,18 @@ public class Logger {
 
   private func stringify(_ error: Error) -> String {
     return error.localizedDescription
+  }
+
+  private func stringifyWithColor(_ value: Bool) -> String {
+    if value {
+      return "yes".lightGreen.dim
+    } else {
+      return "no".lightRed.dim
+    }
+  }
+
+  private func stringifyWithColor(_ message: Any) -> String {
+    return String(describing: message)
   }
 
   private func stringify<T: CustomStringConvertible>(_ message: T) -> String {

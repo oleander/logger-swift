@@ -103,11 +103,12 @@ class LoggerTests: QuickSpec {
         let log = Logger(.info)
         let nest1 = log.info("This is a list") { list in
           list.kv("Key 1", "Value 1")
-          list.kv("Key 2", "Value 2")
+          list.kv("This is false", false)
           list.kv("Key 3", "Value 3")
+          list.kv("This is true", true)
         }
 
-        nest1.kv("Key 4", "Value 4")
+        nest1.kv("Key 5", "Value 5")
 
         let nest2 = log.debug("This is a list") { list in
           list.kv("Not visible", "Value 1")
