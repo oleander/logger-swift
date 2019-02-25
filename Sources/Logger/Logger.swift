@@ -35,11 +35,13 @@ public class Logger {
   public var level: Level
   private let time: Bool
   private let indentation: Int
+  private let prevLevel: Level?
 
-  public init(_ level: Level? = nil, time: Bool = false, tags: [String] = [], indentation: Int = 0) {
+  public init(_ level: Level? = nil, time: Bool = false, tags: [String] = [], indentation: Int = 0, prevLevel: Level? = nil) {
     self.tags = tags
     self.time = time
     self.indentation = indentation
+    self.prevLevel = prevLevel
 
     if let level = level {
       self.level = level
@@ -118,8 +120,10 @@ public class Logger {
     output(.verbose, message)
   }
 
-  public func debug(_ message: Any..., tag: String? = nil) {
+  @discardableResult
+  public func debug(_ message: Any..., tag: String? = nil) -> Logger {
     output(.debug, message)
+    return Logger(level, tags: tags, prevLevel: .debug)
   }
 
   public func abort(_ message: Any...) -> Never {
@@ -136,32 +140,50 @@ public class Logger {
     exit(1)
   }
 
-  public func info(_ message: Any..., tag: String? = nil, icon: Icon? = nil) {
+  @discardableResult
+  public func info(_ message: Any..., tag: String? = nil, icon: Icon? = nil) -> Logger {
     output(.info, message, tag: tag, icon: icon)
+    return Logger(level, tags: tags, prevLevel: .info)
+  }
+
+  public func kv(_ key: Any, _ value: Any) {
+    let indent = String(repeating: " ", count: 3)
+    let res = stringify(key) + ": " + stringify(value).italic
+    output(.info, [indent + res.dim], status: false)
   }
 
   public func error(_ message: Any..., tag: String? = nil) {
     output(.error, message)
   }
 
-  private func output(_ level: Level, _ message: [Any], tags: [String] = [], blink: Bool = false, tag: String? = nil, icon: Icon? = nil) {
-    guard level >= self.level else { return }
+  private func output(_ level: Level, _ message: [Any], tags: [String] = [], blink: Bool = false, tag: String? = nil, icon: Icon? = nil, status: Bool = true) {
+    guard level >= self.level else {
+      return
+    }
+
+    if let prevLevel = prevLevel, prevLevel < self.level {
+      return
+    }
 
     var params = [String]()
 
-    switch level {
-    case .info:
-      params.append("●".lightBlue)
-    case .warn:
-      params.append("●".lightYellow)
-    case .error:
-      params.append("●".lightRed)
-    case .bug:
-      params.append("●".lightRed)
-    case .debug:
-      params.append("●".lightMagenta)
-    case .verbose:
-      params.append("●".lightCyan)
+    if status {
+      switch level {
+      case .info:
+        params.append("●".lightBlue)
+      case .warn:
+        params.append("●".lightYellow)
+      case .error:
+        params.append("●".lightRed)
+      case .bug:
+        params.append("●".lightRed)
+      case .debug:
+        params.append("●".lightMagenta)
+      case .verbose:
+        params.append("●".lightCyan)
+      }
+    } else {
+      params.append(" ")
     }
 
     switch indentation {
@@ -193,8 +215,6 @@ public class Logger {
     if blink {
       params[params.count - 1] = params.last!.blink
     }
-
-    // params.append("›".dim)
 
     if let icon = icon {
       params.append(icon.terminal)

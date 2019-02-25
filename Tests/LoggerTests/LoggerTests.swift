@@ -84,5 +84,20 @@ class LoggerTests: QuickSpec {
         log.info("This is after the line")
       }
     }
+
+    describe("list") {
+      it("prints") {
+        let log = Logger(.info)
+        let nest1 = log.info("This is a list")
+        nest1.kv("Key 1", "Value 1")
+        nest1.kv("Key 2", "Value 2")
+        nest1.kv("Key 3", "Value 3")
+
+        let nest2 = log.debug("Should not be visible")
+        nest2.kv("Invisible 1", "Value 1")
+        nest2.kv("Invisible 2", "Value 2")
+        nest2.kv("Invisible 3", "Value 3")
+      }
+    }
   }
 }
