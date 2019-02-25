@@ -159,10 +159,10 @@ public class Logger {
     let newLogger = Logger(level, tags: tags, prevLevel: .debug)
 
     if let block = block {
-      var list = ListLog()
+      let list = ListLog()
       block(list)
       list.output { row in
-        output(.debug, [row], status: false, indentation: 2)
+        output(.debug, [row], status: false, indentation: 1)
       }
     }
 
@@ -189,10 +189,10 @@ public class Logger {
     let newLogger = Logger(level, tags: tags, prevLevel: .info)
 
     if let block = block {
-      var list = ListLog()
+      let list = ListLog()
       block(list)
       list.output { row in
-        output(.info, [row], status: false, indentation: 2)
+        output(.info, [row], status: false, indentation: 1)
       }
     }
 
