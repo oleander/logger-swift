@@ -151,17 +151,17 @@ public class Logger {
 
     switch level {
     case .info:
-      params.append("●".green)
+      params.append("●".lightBlue)
     case .warn:
-      params.append("●".yellow)
+      params.append("●".lightYellow)
     case .error:
-      params.append("●".red)
+      params.append("●".lightRed)
     case .bug:
-      params.append("●".red)
+      params.append("●".lightRed)
     case .debug:
-      params.append("●".blue)
+      params.append("●".lightMagenta)
     case .verbose:
-      params.append("●".cyan)
+      params.append("●".lightCyan)
     }
 
     switch indentation {
