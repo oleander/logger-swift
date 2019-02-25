@@ -158,7 +158,21 @@ public class Logger {
       params.append("[\(raw)]".dim)
     }
 
-    params.append("[".dim + level.tag + "]".dim)
+    switch level {
+    case .info:
+      params.append("●".lightGreen)
+    case .warn:
+      params.append("●".lightYellow)
+    case .error:
+      params.append("●".lightRed)
+    case .bug:
+      params.append("●".red)
+    case .debug:
+      params.append("●".lightBlue)
+    case .verbose:
+      params.append("●".lightCyan)
+    }
+    // params.append("[".dim + level.tag + "]".dim)
     params.append(message.map(stringify).joined(separator: " "))
 
     let data = params.joined(separator: " ")
