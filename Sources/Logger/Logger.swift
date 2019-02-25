@@ -72,7 +72,7 @@ public class Logger {
   convenience public init(
     _ level: Level? = nil,
     time: Bool = false,
-    tag: String? = nil,
+    _ tag: String? = nil,
     indentation: Int = 0) {
 
     var tags = [String]()
