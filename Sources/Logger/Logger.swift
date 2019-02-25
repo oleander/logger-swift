@@ -321,6 +321,9 @@ public class Logger {
     if level <= .debug && !allTags.isEmpty {
       params.append("\(allTags.joined(separator: " › "))".dim)
       params.append("›".dim)
+    } else if let tag = tag {
+      params.append(tag.dim)
+      params.append("›".dim)
     }
 
     if blink {
