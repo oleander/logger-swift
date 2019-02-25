@@ -69,5 +69,12 @@ class LoggerTests: QuickSpec {
         log1.info("Indent 2")
       }
     }
+
+    describe("icons") {
+      it("has icons") {
+        log.info("It has a checkbox", icon: .done)
+        log.info("It has a heart", icon: .heart)
+      }
+    }
   }
 }

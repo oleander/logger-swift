@@ -8,6 +8,20 @@ import Foundation
 import Rainbow
 
 public class Logger {
+  public enum Icon: String {
+    case done = "✔"
+    case heart = "♥"
+
+    public var terminal: String {
+      switch self {
+      case .done:
+        return rawValue.lightGreen
+      case .heart:
+        return rawValue.lightRed
+      }
+    }
+  }
+
   let colors: [Color] = [
     .black, .red, .green, .yellow, .blue, .magenta, .cyan,
     .white, .lightBlack, .lightRed, .lightGreen, .lightYellow,
@@ -118,19 +132,18 @@ public class Logger {
     exit(1)
   }
 
-  public func info(_ message: Any..., tag: String? = nil) {
-    output(.info, message)
+  public func info(_ message: Any..., tag: String? = nil, icon: Icon? = nil) {
+    output(.info, message, tag: tag, icon: icon)
   }
 
   public func error(_ message: Any..., tag: String? = nil) {
     output(.error, message)
   }
 
-  private func output(_ level: Level, _ message: [Any], tags: [String] = [], blink: Bool = false) {
+  private func output(_ level: Level, _ message: [Any], tags: [String] = [], blink: Bool = false, tag: String? = nil, icon: Icon? = nil) {
     guard level >= self.level else { return }
 
     var params = [String]()
-
 
     switch level {
     case .info:
@@ -163,7 +176,11 @@ public class Logger {
       params.append("[\(raw)]".dim)
     }
 
-    let allTags = self.tags + tags
+    var allTags = self.tags + tags
+
+    if let tag = tag {
+      allTags.append(tag)
+    }
 
     if level <= .debug && !allTags.isEmpty {
       params.append("\(allTags.joined(separator: " › "))".dim)
@@ -174,6 +191,10 @@ public class Logger {
     }
 
     // params.append("›".dim)
+
+    if let icon = icon {
+      params.append(icon.terminal)
+    }
 
     params.append(message.map(stringify).joined(separator: " "))
 
