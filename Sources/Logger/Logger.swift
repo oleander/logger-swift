@@ -122,15 +122,8 @@ public class Logger {
 
   private func output(_ level: Level, _ message: [Any], tags: [String] = [], blink: Bool = false) {
     guard level >= self.level else { return }
-    let formatter = DateFormatter()
 
-    formatter.dateFormat = "HH:mm:ss"
     var params = [String]()
-
-    if time {
-      let raw = formatter.string(from: Date())
-      params.append("[\(raw)]".dim)
-    }
 
     switch level {
     case .info:
@@ -145,6 +138,13 @@ public class Logger {
       params.append("●".blue)
     case .verbose:
       params.append("●".cyan)
+    }
+
+    if time {
+      let formatter = DateFormatter()
+      formatter.dateFormat = "HH:mm:ss"
+      let raw = formatter.string(from: Date())
+      params.append("[\(raw)]".dim)
     }
 
     let allTags = self.tags + tags
