@@ -218,6 +218,7 @@ public class Logger {
       return
     }
 
+    let str = message.map(stringify).joined(separator: " ")
     var params = [String]()
 
     if status {
@@ -249,6 +250,11 @@ public class Logger {
       params.append(String(repeating: "  ", count: allIndent))
     }
 
+    if !status {
+      params.append(str)
+      return ret(params.joined(separator: " "))
+    }
+
     if time {
       let formatter = DateFormatter()
       formatter.dateFormat = "HH:mm:ss"
@@ -275,10 +281,12 @@ public class Logger {
       params.append(icon.terminal)
     }
 
-    params.append(message.map(stringify).joined(separator: " "))
+    params.append(str)
 
-    let data = params.joined(separator: " ")
+    ret(params.joined(separator: " "))
+  }
 
+  private func ret(_ data: String) {
     switch level {
     case .info:
       plainStdout(data)

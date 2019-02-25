@@ -96,6 +96,13 @@ class LoggerTests: QuickSpec {
           list.kv("Not visible", "Value 3")
         }
       }
+
+      it("does not print tags in list") {
+        log.info("This is a list with tags", tag: "My TAG!") { list in
+          list.kv("Does not have a tag 1", "Value 1")
+          list.kv("Does not have a tag 2", "Value 2")
+        }
+      }
     }
 
     describe("tags") {
