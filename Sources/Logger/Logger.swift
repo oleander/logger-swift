@@ -153,11 +153,6 @@ public class Logger {
     formatter.dateFormat = "HH:mm:ss"
     var params = [String]()
 
-    if time {
-      let raw = formatter.string(from: Date())
-      params.append("[\(raw)]".dim)
-    }
-
     switch level {
     case .info:
       params.append("●".lightGreen)
@@ -172,7 +167,12 @@ public class Logger {
     case .verbose:
       params.append("●".lightCyan)
     }
-    
+
+    if time {
+      let raw = formatter.string(from: Date())
+      params.append("[\(raw)]".dim)
+    }
+
     params.append(message.map(stringify).joined(separator: " "))
 
     let data = params.joined(separator: " ")
