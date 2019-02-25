@@ -13,5 +13,15 @@ class LoggerTests: QuickSpec {
         log.debug("This is debug")
       }
     }
+
+    describe("time") {
+      it("prints") {
+        let log = Logger(.debug, time: true)
+        log.info("This is info")
+        log.warn("This is warn")
+        log.error("This is error")
+        log.debug("This is debug")
+      }
+    }
   }
 }

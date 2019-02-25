@@ -27,9 +27,11 @@ public class Logger {
 
   let tags: [String]
   public var level: Level
+  private let time: Bool
 
-  public init(_ level: Level? = nil, tags: [String] = []) {
+  public init(_ level: Level? = nil, time: Bool = false, tags: [String] = []) {
     self.tags = tags
+    self.time = time
 
     for key in ["DEBUG", "debug"] {
       if ProcessInfo.processInfo.environment[key] != nil {
@@ -146,12 +148,20 @@ public class Logger {
 
   private func output(_ level: Level, _ message: [Any]) {
     guard level >= self.level else { return }
+    let formatter = DateFormatter()
 
-    let data = [
-      "[".dim + level.tag + "]".dim,
-      " ",
-      message.map(stringify).joined(separator: " ")
-    ].joined(separator: "")
+    formatter.dateFormat = "HH:mm:ss"
+    var params = [String]()
+
+    if time {
+      let raw = formatter.string(from: Date())
+      params.append("[\(raw)]".dim)
+    }
+
+    params.append("[".dim + level.tag + "]".dim)
+    params.append(message.map(stringify).joined(separator: " "))
+
+    let data = params.joined(separator: " ")
 
     switch level {
     case .error:
