@@ -242,7 +242,13 @@ public class Logger {
   //   output(level, [indent + res.dim], status: false)
   // }
   private func clean(trace: String) -> String {
-    let splits = trace.split(separator: " ").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+    let splits = trace
+      .split(separator: " ")
+      .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+
+    guard splits.count >= 4 else {
+      return splits.joined(separator: " ")
+    }
 
     var params = [String]()
 
@@ -256,14 +262,7 @@ public class Logger {
 
   @discardableResult
   public func error(_ message: Any..., tag: String? = nil, block: ((ListLog) -> Void)? = nil) -> Logger {
-
     output(.error, message)
-    // print("----------")
-    for sym in Thread.callStackSymbols[0..<5] {
-      output(.error, [clean(trace: sym).dim], status: false, indentation: 1)
-      // print(sym)
-      // print("---")
-    }
 
     let newLogger = Logger(level, tags: tags, prevLevel: .error)
 
@@ -272,6 +271,12 @@ public class Logger {
       block(list)
       list.output { row in
         output(.error, [row], status: false, indentation: 1)
+      }
+    }
+
+    if !Thread.callStackSymbols.isEmpty {
+      for sym in Thread.callStackSymbols[0..<5] {
+        output(.error, [clean(trace: sym).dim], status: false, indentation: 1)
       }
     }
 
