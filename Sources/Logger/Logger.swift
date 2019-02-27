@@ -408,7 +408,7 @@ public class Logger {
     print(data, to: &errStream)
   }
 
-  private func stringify(_ error: Error) -> String {
+  private func stringify<T: Error>(_ error: T) -> String {
     return error.localizedDescription
   }
 
