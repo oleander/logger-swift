@@ -93,7 +93,11 @@ public class Logger {
   }
 
   public func ln() {
-    plainStdout(String(repeating: "-", count: 60))
+    ret(Line(
+      level: .info,
+      content: [String(repeating: "-", count: 60)],
+      status: false
+    ).render())
   }
 
   public var inDebugMode: Bool {
@@ -108,9 +112,13 @@ public class Logger {
     return Logger(level, tags: tags + [tag])
   }
 
-
   public func build(_ message: [Any], level: Level, icon: Icon) {
-    output(level, message, icon: icon)
+    ret(Line(
+      level: level,
+      content: message,
+      icon: icon,
+      indentation: indentation
+    ).render())
   }
 
   public func blink(_ message: Any..., tag: String? = nil, icon: Icon? = nil) {
@@ -197,7 +205,7 @@ public class Logger {
     exit(0)
   }
 
-  public func warn(_ message: Any..., tag: String? = nil, icon: Icon? = nil) {
+  public func warn(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) {
     ret(Line(
       level: .warn,
       content: message,
@@ -206,6 +214,19 @@ public class Logger {
       icon: icon,
       indentation: indentation
     ).render())
+
+    if let block = block {
+      let list = ListLog()
+      block(list)
+      list.output { row in
+        ret(Line(
+          level: .warn,
+          content: [row],
+          status: false,
+          indentation: indentation + 1
+        ).render())
+      }
+    }
   }
 
   public func bug(_ message: Any..., tag: String? = nil, icon: Icon? = nil) -> Never {
@@ -236,7 +257,12 @@ public class Logger {
       let list = ListLog()
       block(list)
       list.output { row in
-        output(.info, [row], status: false, indentation: 1)
+        ret(Line(
+          level: .info,
+          content: [row],
+          status: false,
+          indentation: indentation + 1
+        ).render())
       }
     }
   }
@@ -254,7 +280,12 @@ public class Logger {
     let list = ListLog()
     block?(list)
     list.output { row in
-      output(.error, [row], status: false, indentation: 1)
+      ret(Line(
+        level: .error,
+        content: [row],
+        status: false,
+        indentation: indentation + 1
+      ).render())
     }
 
     if !Thread.callStackSymbols.isEmpty {
