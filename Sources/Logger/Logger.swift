@@ -2,60 +2,14 @@
 // https://github.com/sindresorhus/figures/blob/HEAD/index.js
 
 #if os(Linux)
-  import Glibc
+import Glibc
 #else
-  import Darwin
+import Darwin
 #endif
 import Foundation
 import Rainbow
 
-public struct ListItem {
-  public let key: String
-  public let value: Any
-
-  public var count: Int {
-    return key.count
-  }
-
-  public func formatted(indent: Int) -> String {
-    let paddedStr = key.padding(toLength: indent, withPad: " ", startingAt: 0)
-    return paddedStr + ": " + String(describing: value)
-  }
-}
-
-public class ListLog {
-  private var items: [ListItem] = []
-
-  public func kv(_ key: String, _ value: Any) {
-    items.append(ListItem(key: key, value: value))
-  }
-
-  public func output(block: (String) -> Void) {
-    if items.isEmpty { return }
-
-    let longestKeyLength = items.sorted { $0.count > $1.count }.first!.count
-
-    for item in items {
-      block(item.formatted(indent: longestKeyLength).dim)
-    }
-  }
-}
-
 public class Logger {
-  public enum Icon: String {
-    case done = "✔"
-    case heart = "♥"
-
-    public var terminal: String {
-      switch self {
-      case .done:
-        return rawValue.lightGreen
-      case .heart:
-        return rawValue.lightRed
-      }
-    }
-  }
-
   let colors: [Color] = [
     .black, .red, .green, .yellow, .blue, .magenta, .cyan,
     .white, .lightBlack, .lightRed, .lightGreen, .lightYellow,
@@ -65,7 +19,7 @@ public class Logger {
   private var errStream = StderrOutputStream()
   private var outStream = StdoutOutputStream()
 
-  private let tags: [String]
+  public let tags: [String]
   public var level: Level
   private let time: Bool
   private let indentation: Int
