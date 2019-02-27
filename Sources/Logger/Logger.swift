@@ -97,11 +97,7 @@ public class Logger {
   }
 
   public func ln(_ message: String? = nil, block: ((ListLog) -> Void)? = nil) {
-    ret(Line(
-      level: .info,
-      content: [completeLine(message)],
-      status: false
-    ))
+    plainStdout(completeLine(message))
 
     if let block = block {
       let list = ListLog()
@@ -246,6 +242,22 @@ public class Logger {
     ))
 
     exit(0)
+  }
+
+  public func halt(
+    _ message: Any...,
+    tag: String? = nil,
+    icon: Icon? = nil
+  ) -> Never {
+    ret(Line(
+      level: .error,
+      content: message,
+      tags: tags(tag),
+      icon: icon,
+      indentation: indentation
+    ))
+
+    exit(1)
   }
 
   public func warn(
