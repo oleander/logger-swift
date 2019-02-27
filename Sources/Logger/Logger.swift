@@ -117,6 +117,7 @@ public class Logger {
     ret(Line(
       level: .warn,
       content: [message],
+      tags: tags,
       tag: tag,
       icon: icon,
       indentation: indentation,
@@ -128,7 +129,7 @@ public class Logger {
     ret(Line(
       level: .warn,
       content: message,
-      tags: ["TODO"],
+      tags: ["TODO"] + tags,
       tag: tag,
       icon: icon,
       indentation: indentation
@@ -139,6 +140,7 @@ public class Logger {
     ret(Line(
       level: .verbose,
       content: message,
+      tags: tags,
       tag: tag,
       icon: icon,
       indentation: indentation
@@ -158,8 +160,16 @@ public class Logger {
     }
   }
 
-  public func debug(_ message: Any..., tag: String? = nil, block: ((ListLog) -> Void)? = nil) {
-    output(.debug, message, tag: tag)
+  public func debug(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) {
+    ret(Line(
+      level: .debug,
+      content: message,
+      tags: tags,
+      tag: tag,
+      icon: icon,
+      indentation: indentation
+    ).render())
+
 
     if let block = block {
       let list = ListLog()
@@ -171,21 +181,52 @@ public class Logger {
   }
 
   public func abort(_ message: Any..., tag: String? = nil, icon: Icon? = nil) -> Never {
-    output(.warn, message, tag: tag, icon: icon)
+    ret(Line(
+      level: .warn,
+      content: message,
+      tags: tags,
+      tag: tag,
+      icon: icon,
+      indentation: indentation
+    ).render())
+
     exit(0)
   }
 
   public func warn(_ message: Any..., tag: String? = nil, icon: Icon? = nil) {
-    output(.warn, message, tag: tag, icon: icon)
+    ret(Line(
+      level: .warn,
+      content: message,
+      tags: tags,
+      tag: tag,
+      icon: icon,
+      indentation: indentation
+    ).render())
   }
 
   public func bug(_ message: Any..., tag: String? = nil, icon: Icon? = nil) -> Never {
-    output(.bug, message, tag: tag, icon: icon)
+    ret(Line(
+      level: .bug,
+      content: message,
+      tags: tags,
+      tag: tag,
+      icon: icon,
+      indentation: indentation
+    ).render())
+
     exit(1)
   }
 
   public func info(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) {
-    output(.info, message, tag: tag, icon: icon)
+    ret(Line(
+      level: .info,
+      content: message,
+      tags: tags,
+      tag: tag,
+      icon: icon,
+      indentation: indentation
+    ).render())
+
 
     if let block = block {
       let list = ListLog()
@@ -197,7 +238,14 @@ public class Logger {
   }
 
   public func error(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) {
-    output(.error, message, tag: tag, icon: icon)
+    ret(Line(
+      level: .error,
+      content: message,
+      tags: tags,
+      tag: tag,
+      icon: icon,
+      indentation: indentation
+    ).render())
 
     let list = ListLog()
     block?(list)
