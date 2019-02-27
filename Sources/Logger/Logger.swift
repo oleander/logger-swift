@@ -19,7 +19,7 @@ public class Logger {
   private var errStream = StderrOutputStream()
   private var outStream = StdoutOutputStream()
 
-  public let tags: [String]
+  public var tags: [String]
   public var level: Level
   private let time: Bool
   private let indentation: Int
