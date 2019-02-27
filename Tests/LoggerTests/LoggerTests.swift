@@ -52,7 +52,7 @@ class LoggerTests: QuickSpec {
       }
     }
 
-    fdescribe("indentation") {
+    describe("indentation") {
       it("prints") {
         let log = Logger()
         log.info("Indent 1")

@@ -276,7 +276,6 @@ public class Logger {
 
     let allIndent = indentation + extraIndentation
 
-    print("allIndent", allIndent)
     switch allIndent {
     case 0:
       break
