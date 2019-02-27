@@ -241,10 +241,29 @@ public class Logger {
   //   let res = stringify(key) + ": " + stringifyWithColor(value).italic
   //   output(level, [indent + res.dim], status: false)
   // }
+  private func clean(trace: String) -> String {
+    let splits = trace.split(separator: " ").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+
+    var params = [String]()
+
+    params.append("at")
+
+    params.append(splits[1])
+    params.append("(\(splits[3]))")
+
+    return params.joined(separator: " ")
+  }
 
   @discardableResult
   public func error(_ message: Any..., tag: String? = nil, block: ((ListLog) -> Void)? = nil) -> Logger {
+
     output(.error, message)
+    // print("----------")
+    for sym in Thread.callStackSymbols[0..<5] {
+      output(.error, [clean(trace: sym).dim], status: false, indentation: 1)
+      // print(sym)
+      // print("---")
+    }
 
     let newLogger = Logger(level, tags: tags, prevLevel: .error)
 
