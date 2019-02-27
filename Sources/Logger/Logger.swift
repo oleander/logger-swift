@@ -125,8 +125,7 @@ public class Logger {
     ret(Line(
       level: .warn,
       content: [message],
-      tags: tags,
-      tag: tag,
+      tags: tags(tag),
       icon: icon,
       indentation: indentation,
       blink: true
@@ -137,8 +136,7 @@ public class Logger {
     ret(Line(
       level: .warn,
       content: message,
-      tags: ["TODO"] + tags,
-      tag: tag,
+      tags: tags(tag, extra: "TODO"),
       icon: icon,
       indentation: indentation
     ).render())
@@ -148,8 +146,7 @@ public class Logger {
     ret(Line(
       level: .verbose,
       content: message,
-      tags: tags,
-      tag: tag,
+      tags: tags(tag),
       icon: icon,
       indentation: indentation
     ).render())
@@ -177,8 +174,7 @@ public class Logger {
     ret(Line(
       level: .debug,
       content: message,
-      tags: tags,
-      tag: tag,
+      tags: tags(tag),
       icon: icon,
       indentation: indentation
     ).render())
@@ -205,8 +201,7 @@ public class Logger {
     ret(Line(
       level: .warn,
       content: message,
-      tags: tags,
-      tag: tag,
+      tags: tags(tag),
       icon: icon,
       indentation: indentation
     ).render())
@@ -223,8 +218,7 @@ public class Logger {
     ret(Line(
       level: .warn,
       content: message,
-      tags: tags,
-      tag: tag,
+      tags: tags(tag),
       icon: icon,
       indentation: indentation
     ).render())
@@ -251,8 +245,7 @@ public class Logger {
     ret(Line(
       level: .bug,
       content: message,
-      tags: tags,
-      tag: tag,
+      tags: tags(tag),
       icon: icon,
       indentation: indentation
     ).render())
@@ -269,8 +262,7 @@ public class Logger {
     ret(Line(
       level: .info,
       content: message,
-      tags: tags,
-      tag: tag,
+      tags: tags(tag),
       icon: icon,
       indentation: indentation
     ).render())
@@ -299,8 +291,7 @@ public class Logger {
     ret(Line(
       level: .error,
       content: message,
-      tags: tags,
-      tag: tag,
+      tags: tags(tag),
       icon: icon,
       indentation: indentation
     ).render())
@@ -326,6 +317,24 @@ public class Logger {
         ).render())
       }
     }
+  }
+
+  private func tags(_ tag: String? = nil, extra: String? = nil) -> [String] {
+    if level > .debug {
+      return []
+    }
+
+    var allTags = tags
+
+    if let tag = tag {
+      allTags.append(tag)
+    }
+
+    if let tag = extra {
+      allTags.append(tag)
+    }
+
+    return allTags
   }
 
   private func clean(trace: String) -> String {
