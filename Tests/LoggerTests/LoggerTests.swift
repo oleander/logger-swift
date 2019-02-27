@@ -3,6 +3,12 @@
 import Quick
 import Nimble
 
+extension Logger {
+  func fail(_ message: Any...) {
+    log.build(message, level: .warn, icon: .fail)
+  }
+}
+
 class LoggerTests: QuickSpec {
   override func spec() {
     describe("error") {
@@ -74,6 +80,12 @@ class LoggerTests: QuickSpec {
         log.info("This is before the line")
         log.ln()
         log.info("This is after the line")
+      }
+    }
+
+    fdescribe("fail") {
+      it("prints") {
+        log.fail("This is a fail test")
       }
     }
 
@@ -149,7 +161,7 @@ class LoggerTests: QuickSpec {
       }
     }
 
-    fdescribe("example") {
+    describe("example") {
       it("prints") {
         let log = Logger(.info, time: true)
 

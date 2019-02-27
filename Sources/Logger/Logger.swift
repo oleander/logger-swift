@@ -115,6 +115,11 @@ public class Logger {
     return Logger(level, tags: tags + [tag])
   }
 
+
+  public func build(_ message: [Any], level: Level, icon: Icon) {
+    output(level, message, icon: icon)
+  }
+
   public func blink(_ message: Any...) {
     output(.warn, message, blink: true)
   }
@@ -280,7 +285,9 @@ public class Logger {
     let str = message.map(stringify).joined(separator: " ")
     var params = [String]()
 
-    if status {
+    if let icon = icon {
+      params.append(icon.terminal)
+    } else if status {
       params.append(statusIcon(for: level))
     } else {
       params.append(" ")
@@ -324,10 +331,6 @@ public class Logger {
 
     if blink {
       params[params.count - 1] = params.last!.blink
-    }
-
-    if let icon = icon {
-      params.append(icon.terminal)
     }
 
     params.append(str)
