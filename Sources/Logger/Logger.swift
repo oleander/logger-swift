@@ -124,18 +124,36 @@ public class Logger {
     ).render())
   }
 
-  public func todo(_ message: Any...) {
-    output(.warn, message, tag: "TODO")
+  public func todo(_ message: Any..., tag: String? = nil, icon: Icon? = nil) {
+    ret(Line(
+      level: .warn,
+      content: message,
+      tags: ["TODO"],
+      tag: tag,
+      icon: icon,
+      indentation: indentation
+    ).render())
   }
 
   public func verbose(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) {
-    output(.verbose, message, tag: tag, icon: icon)
+    ret(Line(
+      level: .verbose,
+      content: message,
+      tag: tag,
+      icon: icon,
+      indentation: indentation
+    ).render())
 
     if let block = block {
       let list = ListLog()
       block(list)
       list.output { row in
-        output(.verbose, [row], status: false, indentation: 1)
+        ret(Line(
+          level: .verbose,
+          content: [row],
+          status: false,
+          indentation: indentation + 1
+        ).render())
       }
     }
   }
