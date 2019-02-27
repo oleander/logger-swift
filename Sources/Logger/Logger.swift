@@ -1,4 +1,6 @@
 // https://github.com/klauscfhq/signale
+// https://github.com/sindresorhus/figures/blob/HEAD/index.js
+
 #if os(Linux)
   import Glibc
 #else
@@ -279,6 +281,49 @@ public class Logger {
     return Logger(level, tags: tags, prevLevel: .error)
   }
 
+  private var statusIcon: String {
+    switch OutputTarget.current {
+    case .xcodeColors, .console:
+      return coloredStatusIcon
+    default:
+      return plainStatusIcon
+    }
+  }
+
+  private var coloredStatusIcon: String {
+    switch level {
+    case .info:
+      return "●".lightBlue
+    case .warn:
+      return "●".yellow
+    case .error:
+      return "●".red
+    case .bug:
+      return "●".red
+    case .debug:
+      return "●".lightMagenta
+    case .verbose:
+      return "●".lightCyan
+    }
+  }
+
+  private var plainStatusIcon: String {
+    switch level {
+    case .info:
+      return "[Info]"
+    case .warn:
+      return "[Warn]"
+    case .error:
+      return "[Error]"
+    case .bug:
+      return "[Bug]"
+    case .debug:
+      return "[Debug]"
+    case .verbose:
+      return "[Verbose]"
+    }
+  }
+
   private func output(_ level: Level, _ message: [Any], tags: [String] = [], blink: Bool = false, tag: String? = nil, icon: Icon? = nil, status: Bool = true, indentation extraIndentation: Int = 0) {
     guard level >= self.level else {
       return
@@ -292,20 +337,7 @@ public class Logger {
     var params = [String]()
 
     if status {
-      switch level {
-      case .info:
-        params.append("●".lightBlue)
-      case .warn:
-        params.append("●".yellow)
-      case .error:
-        params.append("●".red)
-      case .bug:
-        params.append("●".red)
-      case .debug:
-        params.append("●".lightMagenta)
-      case .verbose:
-        params.append("●".lightCyan)
-      }
+      params.append(statusIcon)
     } else {
       params.append(" ")
     }
