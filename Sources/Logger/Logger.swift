@@ -168,7 +168,12 @@ public class Logger {
     }
   }
 
-  public func debug(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) {
+  public func debug(
+    _ message: Any...,
+    tag: String? = nil,
+    icon: Icon? = nil,
+    block: ((ListLog) -> Void)? = nil
+  ) {
     ret(Line(
       level: .debug,
       content: message,
@@ -192,7 +197,11 @@ public class Logger {
     }
   }
 
-  public func abort(_ message: Any..., tag: String? = nil, icon: Icon? = nil) -> Never {
+  public func abort(
+    _ message: Any...,
+    tag: String? = nil,
+    icon: Icon? = nil
+  ) -> Never {
     ret(Line(
       level: .warn,
       content: message,
@@ -205,7 +214,12 @@ public class Logger {
     exit(0)
   }
 
-  public func warn(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) {
+  public func warn(
+    _ message: Any...,
+    tag: String? = nil,
+    icon: Icon? = nil,
+    block: ((ListLog) -> Void)? = nil
+  ) {
     ret(Line(
       level: .warn,
       content: message,
@@ -229,7 +243,11 @@ public class Logger {
     }
   }
 
-  public func bug(_ message: Any..., tag: String? = nil, icon: Icon? = nil) -> Never {
+  public func bug(
+    _ message: Any...,
+    tag: String? = nil,
+    icon: Icon? = nil
+  ) -> Never {
     ret(Line(
       level: .bug,
       content: message,
@@ -242,7 +260,12 @@ public class Logger {
     exit(1)
   }
 
-  public func info(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) {
+  public func info(
+    _ message: Any...,
+    tag: String? = nil,
+    icon: Icon? = nil,
+    block: ((ListLog) -> Void)? = nil
+  ) {
     ret(Line(
       level: .info,
       content: message,
@@ -267,7 +290,12 @@ public class Logger {
     }
   }
 
-  public func error(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) {
+  public func error(
+    _ message: Any...,
+    tag: String? = nil,
+    icon: Icon? = nil,
+    block: ((ListLog) -> Void)? = nil
+  ) {
     ret(Line(
       level: .error,
       content: message,
@@ -290,7 +318,12 @@ public class Logger {
 
     if !Thread.callStackSymbols.isEmpty {
       for sym in Thread.callStackSymbols[0..<4] {
-        output(.error, [clean(trace: sym).dim], status: false, indentation: 1)
+        ret(Line(
+          level: .error,
+          content: [clean(trace: sym).dim],
+          status: false,
+          indentation: indentation + 1
+        ).render())
       }
     }
   }
@@ -314,120 +347,6 @@ public class Logger {
     return params.joined(separator: " ")
   }
 
-  private func statusIcon(for level: Level) -> String {
-    switch OutputTarget.current {
-    case .xcodeColors, .console:
-      return coloredStatusIcon(for: level)
-    default:
-      return plainStatusIcon(for: level)
-    }
-  }
-
-  private func coloredStatusIcon(for level: Level) -> String {
-    switch level {
-    case .info:
-      return "●".lightBlue
-    case .warn:
-      return "●".yellow
-    case .error:
-      return "●".red
-    case .bug:
-      return "●".red
-    case .debug:
-      return "●".lightMagenta
-    case .verbose:
-      return "●".lightCyan
-    }
-  }
-
-  private func plainStatusIcon(for level: Level) -> String {
-    switch level {
-    case .info:
-      return "[I]"
-    case .warn:
-      return "[W]"
-    case .error:
-      return "[E]"
-    case .bug:
-      return "[B]"
-    case .debug:
-      return "[D]"
-    case .verbose:
-      return "[V]"
-    }
-  }
-
-  private func output(
-    _ level: Level,
-    _ message: [Any],
-    tags: [String] = [],
-    blink: Bool = false,
-    tag: String? = nil,
-    icon: Icon? = nil,
-    status: Bool = true,
-    indentation extraIndentation: Int = 0
-  ) {
-    guard level >= self.level else {
-      return
-    }
-
-    let str = message.map(stringify).joined(separator: " ")
-    var params = [String]()
-
-    if let icon = icon {
-      params.append(icon.terminal)
-    } else if status {
-      params.append(statusIcon(for: level))
-    } else {
-      params.append(" ")
-    }
-
-    let allIndent = indentation + extraIndentation
-
-    switch allIndent {
-    case 0:
-      break
-    case 1:
-      params.append(" ")
-    default:
-      params.append(String(repeating: "  ", count: allIndent))
-    }
-
-    if !status {
-      params.append(str)
-      return ret(params.joined(separator: " "))
-    }
-
-    if time {
-      let formatter = DateFormatter()
-      formatter.dateFormat = "HH:mm:ss"
-      let raw = formatter.string(from: Date())
-      params.append("[\(raw)]".dim)
-    }
-
-    var allTags = self.tags + tags
-
-    if let tag = tag {
-      allTags.append(tag)
-    }
-
-    if self.level <= .debug && !allTags.isEmpty {
-      params.append("\(allTags.joined(separator: " › "))".dim)
-      params.append("›".dim)
-    } else if let tag = tag {
-      params.append(tag.dim)
-      params.append("›".dim)
-    }
-
-    if blink {
-      params[params.count - 1] = params.last!.blink
-    }
-
-    params.append(str)
-
-    ret(params.joined(separator: " "))
-  }
-
   private func ret(_ data: String) {
     switch level {
     case .info:
@@ -443,13 +362,5 @@ public class Logger {
 
   private func plainStderr(_ data: String) {
     print(data, to: &errStream)
-  }
-
-  private func stringify<T: Printable>(_ object: T) -> String {
-    return object.printable
-  }
-
-  private func stringify(_ message: Any) -> String {
-    return String(describing: message)
   }
 }
