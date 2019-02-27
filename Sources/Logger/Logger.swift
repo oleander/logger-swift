@@ -178,6 +178,7 @@ public class Logger {
 
   @discardableResult
   public func info(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) -> Logger {
+
     output(.info, message, tag: tag, icon: icon)
     let newLogger = Logger(level, tags: tags, prevLevel: .info)
 
@@ -324,7 +325,7 @@ public class Logger {
       allTags.append(tag)
     }
 
-    if level <= .debug && !allTags.isEmpty {
+    if self.level <= .debug && !allTags.isEmpty {
       params.append("\(allTags.joined(separator: " › "))".dim)
       params.append("›".dim)
     } else if let tag = tag {

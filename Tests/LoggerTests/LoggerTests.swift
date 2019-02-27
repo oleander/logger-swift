@@ -116,6 +116,15 @@ class LoggerTests: QuickSpec {
     }
 
     describe("tags") {
+      it("prints again") {
+        let log = Logger(.debug, time: true)
+        log.tags.append("TAG!")
+        log.info("This is info")
+        log.warn("This is warn")
+        log.error("This is error")
+        log.debug("This is debug")
+      }
+
       it("prints") {
         let log = Logger(.debug, tags: ["A", "B", "C"])
         log.info("This is info")
@@ -130,6 +139,13 @@ class LoggerTests: QuickSpec {
         log.warn("This is warn")
         log.error("This is error")
         log.debug("This is debug")
+      }
+    }
+
+    describe("tags bug") {
+      it("works") {
+        let log = Logger(.debug, "XXX")
+        log.info("Hello!")
       }
     }
   }
