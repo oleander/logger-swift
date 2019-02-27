@@ -11,6 +11,12 @@ extension Logger {
 
 class LoggerTests: QuickSpec {
   override func spec() {
+    // fdescribe("columns") {
+    //   it("prints") {
+    //     print(getEnvValue("COLUMNS"))
+    //   }
+    // }
+
     describe("error") {
       it("prints") {
         do {
@@ -76,11 +82,15 @@ class LoggerTests: QuickSpec {
       }
     }
 
-    describe("line") {
+    fdescribe("line") {
       it("prints") {
         log.info("This is before the line")
         log.ln()
         log.info("This is after the line")
+
+        log.info("This is with message BEFORE")
+        log.ln("Message")
+        log.info("This is with message AFTER")
       }
     }
 

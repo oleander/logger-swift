@@ -92,10 +92,43 @@ public class Logger {
     return .info
   }
 
-  public func ln() {
+  private func dash(_ number: Int) -> String {
+    return String(repeating: "-", count: number)
+  }
+
+  public func ln(_ message: String? = nil) {
+    let columns = 110
+
+    guard let message = message else {
+      return ret(Line(
+        level: .info,
+        content: [dash(columns)],
+        status: false
+      ))
+    }
+
+    let dashes = columns - message.count
+
+    guard dashes > 2 else {
+      return ret(Line(
+        level: .info,
+        content: [message],
+        status: false
+      ))
+    }
+
+    let half = Int(dashes / 2)
+
+    var endDash = dash(half - 1)
+    if (dashes % 2) != 0 {
+      endDash = dash(half)
+    }
+
+    let content = dash(half - 1) + " " + message + " " + endDash
+
     ret(Line(
       level: .info,
-      content: [String(repeating: "-", count: 60)],
+      content: [content],
       status: false
     ))
   }

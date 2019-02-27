@@ -5,7 +5,7 @@ import Glibc
 import Darwin.C
 #endif
 
-private func getEnvValue(_ key: String) -> String? {
+public func getEnvValue(_ key: String) -> String? {
     guard let value = getenv(key) else {
         return nil
     }
