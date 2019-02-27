@@ -231,7 +231,8 @@ public class Logger {
   public func abort(
     _ message: Any...,
     tag: String? = nil,
-    icon: Icon? = nil
+    icon: Icon? = nil,
+    block: ((ListLog) -> Void)? = nil
   ) -> Never {
     ret(Line(
       level: .warn,
@@ -241,13 +242,27 @@ public class Logger {
       indentation: indentation
     ))
 
+    if let block = block {
+      let list = ListLog()
+      block(list)
+      list.output { row in
+        ret(Line(
+          level: .warn,
+          content: [row],
+          status: false,
+          indentation: indentation + 1
+        ))
+      }
+    }
+
     exit(0)
   }
 
   public func halt(
     _ message: Any...,
     tag: String? = nil,
-    icon: Icon? = nil
+    icon: Icon? = nil,
+    block: ((ListLog) -> Void)? = nil
   ) -> Never {
     ret(Line(
       level: .error,
@@ -256,6 +271,19 @@ public class Logger {
       icon: icon,
       indentation: indentation
     ))
+
+    if let block = block {
+      let list = ListLog()
+      block(list)
+      list.output { row in
+        ret(Line(
+          level: .error,
+          content: [row],
+          status: false,
+          indentation: indentation + 1
+        ))
+      }
+    }
 
     exit(1)
   }

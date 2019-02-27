@@ -17,12 +17,17 @@ class LoggerTests: QuickSpec {
     //   }
     // }
 
-    describe("error") {
+    fdescribe("error") {
       it("prints") {
         do {
           throw "This is an error message"
         } catch {
           log.error("This is an error", error)
+
+          log.error("Error with table", error) { table in
+            table.kv("Key error 1", "Value 1")
+            table.kv("Key error 2", "Value 2")
+          }
         }
       }
     }
