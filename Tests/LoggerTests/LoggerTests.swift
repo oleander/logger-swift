@@ -91,6 +91,18 @@ class LoggerTests: QuickSpec {
         log.info("This is with message BEFORE")
         log.ln("Message")
         log.info("This is with message AFTER")
+
+        log.ln("With box") { table in
+          table.kv("Key 1", "Value 1")
+          table.kv("Key 2", "Value 2")
+        }
+
+        log.info("This is after the line")
+
+        log.info("This is with message BEFORE")
+        log.ln("Message")
+        log.info("This is with message AFTER")
+
       }
     }
 

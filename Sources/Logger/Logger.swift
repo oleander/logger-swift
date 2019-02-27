@@ -96,41 +96,47 @@ public class Logger {
     return String(repeating: "-", count: number)
   }
 
-  public func ln(_ message: String? = nil) {
+  public func ln(_ message: String? = nil, block: ((ListLog) -> Void)? = nil) {
+    ret(Line(
+      level: .info,
+      content: [completeLine(message)],
+      status: false
+    ))
+
+    if let block = block {
+      let list = ListLog()
+      block(list)
+      list.output { row in
+        ret(Line(
+          level: .info,
+          content: [row],
+          status: false,
+          indentation: indentation + 1
+        ))
+      }
+    }
+  }
+
+  private func completeLine(_ message: String? = nil) -> String {
     let columns = 110
 
     guard let message = message else {
-      return ret(Line(
-        level: .info,
-        content: [dash(columns)],
-        status: false
-      ))
+      return dash(columns)
     }
 
     let dashes = columns - message.count
 
     guard dashes > 2 else {
-      return ret(Line(
-        level: .info,
-        content: [message],
-        status: false
-      ))
+      return message
     }
 
     let half = Int(dashes / 2)
-
     var endDash = dash(half - 1)
     if (dashes % 2) != 0 {
       endDash = dash(half)
     }
 
-    let content = dash(half - 1) + " " + message + " " + endDash
-
-    ret(Line(
-      level: .info,
-      content: [content],
-      status: false
-    ))
+    return dash(half - 1) + " " + message + " " + endDash
   }
 
   public var inDebugMode: Bool {
