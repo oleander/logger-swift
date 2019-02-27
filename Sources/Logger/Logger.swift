@@ -128,10 +128,8 @@ public class Logger {
     output(.warn, message, tags: ["TODO"])
   }
 
-  @discardableResult
-  public func verbose(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) -> Logger {
+  public func verbose(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) {
     output(.verbose, message, tag: tag, icon: icon)
-    let newLogger = Logger(level, tags: tags, prevLevel: .verbose)
 
     if let block = block {
       let list = ListLog()
@@ -140,15 +138,10 @@ public class Logger {
         output(.verbose, [row], status: false, indentation: 1)
       }
     }
-
-    return newLogger
   }
 
-  @discardableResult
-  public func debug(_ message: Any..., tag: String? = nil, block: ((ListLog) -> Void)? = nil) -> Logger {
+  public func debug(_ message: Any..., tag: String? = nil, block: ((ListLog) -> Void)? = nil) {
     output(.debug, message)
-
-    let newLogger = Logger(level, tags: tags, prevLevel: .debug)
 
     if let block = block {
       let list = ListLog()
@@ -157,8 +150,6 @@ public class Logger {
         output(.debug, [row], status: false, indentation: 1)
       }
     }
-
-    return newLogger
   }
 
   public func abort(_ message: Any...) -> Never {
@@ -175,11 +166,8 @@ public class Logger {
     exit(1)
   }
 
-  @discardableResult
-  public func info(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) -> Logger {
-
+  public func info(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) {
     output(.info, message, tag: tag, icon: icon)
-    let newLogger = Logger(level, tags: tags, prevLevel: .info)
 
     if let block = block {
       let list = ListLog()
@@ -188,8 +176,6 @@ public class Logger {
         output(.info, [row], status: false, indentation: 1)
       }
     }
-
-    return newLogger
   }
 
   private func clean(trace: String) -> String {
@@ -211,8 +197,7 @@ public class Logger {
     return params.joined(separator: " ")
   }
 
-  @discardableResult
-  public func error(_ message: Any..., tag: String? = nil, block: ((ListLog) -> Void)? = nil) -> Logger {
+  public func error(_ message: Any..., tag: String? = nil, block: ((ListLog) -> Void)? = nil) {
     output(.error, message)
 
     let list = ListLog()
@@ -226,8 +211,6 @@ public class Logger {
         output(.error, [clean(trace: sym).dim], status: false, indentation: 1)
       }
     }
-
-    return Logger(level, tags: tags, prevLevel: .error)
   }
 
   private func statusIcon(for level: Level) -> String {
