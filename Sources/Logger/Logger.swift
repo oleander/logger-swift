@@ -355,8 +355,8 @@ public class Logger {
     print(data, to: &errStream)
   }
 
-  private func stringify<T: Error>(_ error: T) -> String {
-    return error.localizedDescription
+  private func stringify<T: Printable>(_ object: T) -> String {
+    return object.printable
   }
 
   private func stringifyWithColor(_ message: Any) -> String {
