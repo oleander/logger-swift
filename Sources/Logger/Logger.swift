@@ -236,16 +236,16 @@ public class Logger {
     return Logger(level, tags: tags, prevLevel: .error)
   }
 
-  private var statusIcon: String {
+  private func statusIcon(for level: Level) -> String {
     switch OutputTarget.current {
     case .xcodeColors, .console:
-      return coloredStatusIcon
+      return coloredStatusIcon(for: level)
     default:
-      return plainStatusIcon
+      return plainStatusIcon(for: level)
     }
   }
 
-  private var coloredStatusIcon: String {
+  private func coloredStatusIcon(for level: Level) -> String {
     switch level {
     case .info:
       return "●".lightBlue
@@ -262,7 +262,7 @@ public class Logger {
     }
   }
 
-  private var plainStatusIcon: String {
+  private func plainStatusIcon(for level: Level) -> String {
     switch level {
     case .info:
       return "[Info]"
@@ -292,7 +292,7 @@ public class Logger {
     var params = [String]()
 
     if status {
-      params.append(statusIcon)
+      params.append(statusIcon(for: level))
     } else {
       params.append(" ")
     }
