@@ -265,17 +265,17 @@ public class Logger {
   private func plainStatusIcon(for level: Level) -> String {
     switch level {
     case .info:
-      return "[Info]"
+      return "[I]"
     case .warn:
-      return "[Warn]"
+      return "[W]"
     case .error:
-      return "[Error]"
+      return "[E]"
     case .bug:
-      return "[Bug]"
+      return "[B]"
     case .debug:
-      return "[Debug]"
+      return "[D]"
     case .verbose:
-      return "[Verbose]"
+      return "[V]"
     }
   }
 
