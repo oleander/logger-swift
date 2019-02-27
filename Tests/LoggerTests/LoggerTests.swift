@@ -83,7 +83,7 @@ class LoggerTests: QuickSpec {
       }
     }
 
-    fdescribe("fail") {
+    describe("fail") {
       it("prints") {
         log.fail("This is a fail test")
       }

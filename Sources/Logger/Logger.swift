@@ -359,14 +359,6 @@ public class Logger {
     return object.printable
   }
 
-  private func stringifyWithColor(_ message: Any) -> String {
-    return String(describing: message)
-  }
-
-  private func stringify<T: CustomStringConvertible>(_ message: T) -> String {
-    return String(describing: message)
-  }
-
   private func stringify(_ message: Any) -> String {
     return String(describing: message)
   }
