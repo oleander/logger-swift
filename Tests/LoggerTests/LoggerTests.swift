@@ -82,7 +82,7 @@ class LoggerTests: QuickSpec {
       }
     }
 
-    fdescribe("line") {
+    describe("line") {
       it("prints") {
         log.info("This is before the line")
         log.ln()
