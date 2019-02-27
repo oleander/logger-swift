@@ -109,6 +109,7 @@ class LoggerTests: QuickSpec {
         log.info("This is a list") { list in
           list.kv("Key 1", "Value 1")
           list.kv("This is false", false)
+          list.kv("This is an array", ["A", "B", "C"])
           list.kv("Key 3", "Value 3")
           list.kv("This is true", true)
         }
