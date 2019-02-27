@@ -201,7 +201,7 @@ public class Logger {
     params.append("at")
 
     params.append(splits[1])
-    params.append("(\(splits[3].truncated(20)))")
+    params.append("(\(splits[3].truncated(80)))")
 
     return params.joined(separator: " ")
   }
