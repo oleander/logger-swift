@@ -125,7 +125,7 @@ public class Logger {
   }
 
   public func todo(_ message: Any...) {
-    output(.warn, message, tags: ["TODO"])
+    output(.warn, message, tag: "TODO")
   }
 
   public func verbose(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) {
@@ -141,7 +141,7 @@ public class Logger {
   }
 
   public func debug(_ message: Any..., tag: String? = nil, block: ((ListLog) -> Void)? = nil) {
-    output(.debug, message)
+    output(.debug, message, tag: tag)
 
     if let block = block {
       let list = ListLog()
@@ -152,17 +152,17 @@ public class Logger {
     }
   }
 
-  public func abort(_ message: Any...) -> Never {
-    output(.warn, message)
+  public func abort(_ message: Any..., tag: String? = nil, icon: Icon? = nil) -> Never {
+    output(.warn, message, tag: tag, icon: icon)
     exit(0)
   }
 
-  public func warn(_ message: Any...) {
-    output(.warn, message)
+  public func warn(_ message: Any..., tag: String? = nil, icon: Icon? = nil) {
+    output(.warn, message, tag: tag, icon: icon)
   }
 
-  public func bug(_ message: Any...) -> Never {
-    output(.bug, message)
+  public func bug(_ message: Any..., tag: String? = nil, icon: Icon? = nil) -> Never {
+    output(.bug, message, tag: tag, icon: icon)
     exit(1)
   }
 
@@ -174,6 +174,22 @@ public class Logger {
       block(list)
       list.output { row in
         output(.info, [row], status: false, indentation: 1)
+      }
+    }
+  }
+
+  public func error(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) {
+    output(.error, message, tag: tag, icon: icon)
+
+    let list = ListLog()
+    block?(list)
+    list.output { row in
+      output(.error, [row], status: false, indentation: 1)
+    }
+
+    if !Thread.callStackSymbols.isEmpty {
+      for sym in Thread.callStackSymbols[0..<4] {
+        output(.error, [clean(trace: sym).dim], status: false, indentation: 1)
       }
     }
   }
@@ -195,22 +211,6 @@ public class Logger {
     params.append("(\(splits[3].truncated(80)))")
 
     return params.joined(separator: " ")
-  }
-
-  public func error(_ message: Any..., tag: String? = nil, block: ((ListLog) -> Void)? = nil) {
-    output(.error, message)
-
-    let list = ListLog()
-    block?(list)
-    list.output { row in
-      output(.error, [row], status: false, indentation: 1)
-    }
-
-    if !Thread.callStackSymbols.isEmpty {
-      for sym in Thread.callStackSymbols[0..<4] {
-        output(.error, [clean(trace: sym).dim], status: false, indentation: 1)
-      }
-    }
   }
 
   private func statusIcon(for level: Level) -> String {
@@ -256,7 +256,16 @@ public class Logger {
     }
   }
 
-  private func output(_ level: Level, _ message: [Any], tags: [String] = [], blink: Bool = false, tag: String? = nil, icon: Icon? = nil, status: Bool = true, indentation extraIndentation: Int = 0) {
+  private func output(
+    _ level: Level,
+    _ message: [Any],
+    tags: [String] = [],
+    blink: Bool = false,
+    tag: String? = nil,
+    icon: Icon? = nil,
+    status: Bool = true,
+    indentation extraIndentation: Int = 0
+  ) {
     guard level >= self.level else {
       return
     }
