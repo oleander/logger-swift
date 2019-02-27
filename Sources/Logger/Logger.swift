@@ -170,12 +170,16 @@ public class Logger {
       indentation: indentation
     ).render())
 
-
     if let block = block {
       let list = ListLog()
       block(list)
       list.output { row in
-        output(.debug, [row], status: false, indentation: 1)
+        ret(Line(
+          level: .debug,
+          content: [row],
+          status: false,
+          indentation: indentation + 1
+        ).render())
       }
     }
   }
