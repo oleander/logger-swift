@@ -271,7 +271,7 @@ public class Logger {
     }
 
     if !Thread.callStackSymbols.isEmpty {
-      for sym in Thread.callStackSymbols[0..<5] {
+      for sym in Thread.callStackSymbols[0..<4] {
         output(.error, [clean(trace: sym).dim], status: false, indentation: 1)
       }
     }
