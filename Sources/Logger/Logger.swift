@@ -97,7 +97,7 @@ public class Logger {
       level: .info,
       content: [String(repeating: "-", count: 60)],
       status: false
-    ).render())
+    ))
   }
 
   public var inDebugMode: Bool {
@@ -118,7 +118,7 @@ public class Logger {
       content: message,
       icon: icon,
       indentation: indentation
-    ).render())
+    ))
   }
 
   public func blink(_ message: Any..., tag: String? = nil, icon: Icon? = nil) {
@@ -129,7 +129,7 @@ public class Logger {
       icon: icon,
       indentation: indentation,
       blink: true
-    ).render())
+    ))
   }
 
   public func todo(_ message: Any..., tag: String? = nil, icon: Icon? = nil) {
@@ -139,7 +139,7 @@ public class Logger {
       tags: tags(tag, extra: "TODO"),
       icon: icon,
       indentation: indentation
-    ).render())
+    ))
   }
 
   public func verbose(_ message: Any..., tag: String? = nil, icon: Icon? = nil, block: ((ListLog) -> Void)? = nil) {
@@ -149,7 +149,7 @@ public class Logger {
       tags: tags(tag),
       icon: icon,
       indentation: indentation
-    ).render())
+    ))
 
     if let block = block {
       let list = ListLog()
@@ -160,7 +160,7 @@ public class Logger {
           content: [row],
           status: false,
           indentation: indentation + 1
-        ).render())
+        ))
       }
     }
   }
@@ -177,7 +177,7 @@ public class Logger {
       tags: tags(tag),
       icon: icon,
       indentation: indentation
-    ).render())
+    ))
 
     if let block = block {
       let list = ListLog()
@@ -188,7 +188,7 @@ public class Logger {
           content: [row],
           status: false,
           indentation: indentation + 1
-        ).render())
+        ))
       }
     }
   }
@@ -204,7 +204,7 @@ public class Logger {
       tags: tags(tag),
       icon: icon,
       indentation: indentation
-    ).render())
+    ))
 
     exit(0)
   }
@@ -221,7 +221,7 @@ public class Logger {
       tags: tags(tag),
       icon: icon,
       indentation: indentation
-    ).render())
+    ))
 
     if let block = block {
       let list = ListLog()
@@ -232,7 +232,7 @@ public class Logger {
           content: [row],
           status: false,
           indentation: indentation + 1
-        ).render())
+        ))
       }
     }
   }
@@ -248,7 +248,7 @@ public class Logger {
       tags: tags(tag),
       icon: icon,
       indentation: indentation
-    ).render())
+    ))
 
     exit(1)
   }
@@ -265,8 +265,7 @@ public class Logger {
       tags: tags(tag),
       icon: icon,
       indentation: indentation
-    ).render())
-
+    ))
 
     if let block = block {
       let list = ListLog()
@@ -277,7 +276,7 @@ public class Logger {
           content: [row],
           status: false,
           indentation: indentation + 1
-        ).render())
+        ))
       }
     }
   }
@@ -294,7 +293,7 @@ public class Logger {
       tags: tags(tag),
       icon: icon,
       indentation: indentation
-    ).render())
+    ))
 
     let list = ListLog()
     block?(list)
@@ -304,7 +303,7 @@ public class Logger {
         content: [row],
         status: false,
         indentation: indentation + 1
-      ).render())
+      ))
     }
 
     if !Thread.callStackSymbols.isEmpty {
@@ -314,7 +313,7 @@ public class Logger {
           content: [clean(trace: sym).dim],
           status: false,
           indentation: indentation + 1
-        ).render())
+        ))
       }
     }
   }
@@ -356,12 +355,16 @@ public class Logger {
     return params.joined(separator: " ")
   }
 
-  private func ret(_ data: String) {
+  private func ret(_ line: Line) {
+    guard line.level >= self.level else {
+      return
+    }
+
     switch level {
     case .info:
-      plainStdout(data)
+      plainStdout(line.render())
     default:
-      plainStderr(data)
+      plainStderr(line.render())
     }
   }
 
