@@ -264,14 +264,10 @@ public class Logger {
   public func error(_ message: Any..., tag: String? = nil, block: ((ListLog) -> Void)? = nil) -> Logger {
     output(.error, message)
 
-    let newLogger = Logger(level, tags: tags, prevLevel: .error)
-
-    if let block = block {
-      let list = ListLog()
-      block(list)
-      list.output { row in
-        output(.error, [row], status: false, indentation: 1)
-      }
+    let list = ListLog()
+    block?(list)
+    list.output { row in
+      output(.error, [row], status: false, indentation: 1)
     }
 
     if !Thread.callStackSymbols.isEmpty {
@@ -280,7 +276,7 @@ public class Logger {
       }
     }
 
-    return newLogger
+    return Logger(level, tags: tags, prevLevel: .error)
   }
 
   private func output(_ level: Level, _ message: [Any], tags: [String] = [], blink: Bool = false, tag: String? = nil, icon: Icon? = nil, status: Bool = true, indentation extraIndentation: Int = 0) {
