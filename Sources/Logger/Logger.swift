@@ -17,32 +17,25 @@ public class Logger {
   public var level: Level
   private let time: Bool
   private let indentation: Int
-  private let prevLevel: Level?
-
-  convenience public init(
-    _ level: Level? = nil,
-    time: Bool = false,
-    _ tag: String? = nil,
-    indentation: Int = 0) {
-
-    var tags = [String]()
-    if let tag = tag {
-      tags.append(tag)
-    }
-
-    self.init(level, time: time, tags: tags, indentation: indentation)
-  }
 
   public init(
     _ level: Level? = nil,
     time: Bool = false,
-    tags: [String] = [],
-    indentation: Int = 0,
-    prevLevel: Level? = nil) {
+    tags _tags: [String] = [],
+    _ _tag: String? = nil,
+    indentation: Int = 0
+    ) {
+
+    var tags = [String]()
+    if let tag = _tag {
+      tags.append(tag)
+    }
+
+    tags += _tags
+
     self.tags = tags
     self.time = time
     self.indentation = indentation
-    self.prevLevel = prevLevel
 
     if let level = level {
       self.level = level
@@ -267,10 +260,6 @@ public class Logger {
     indentation extraIndentation: Int = 0
   ) {
     guard level >= self.level else {
-      return
-    }
-
-    if let prevLevel = prevLevel, prevLevel < self.level {
       return
     }
 
