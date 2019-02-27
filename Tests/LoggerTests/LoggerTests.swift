@@ -5,7 +5,7 @@ import Nimble
 
 extension Logger {
   func fail(_ message: Any...) {
-    log.build(message, level: .warn, icon: .fail)
+    build(message, level: .warn, icon: .fail)
   }
 }
 
@@ -52,7 +52,7 @@ class LoggerTests: QuickSpec {
       }
     }
 
-    describe("indentation") {
+    fdescribe("indentation") {
       it("prints") {
         let log = Logger()
         log.info("Indent 1")
@@ -63,6 +63,7 @@ class LoggerTests: QuickSpec {
         let log3 = log2.indent()
         log3.info("Indent 4")
         log2.info("Indent 3")
+        log2.fail("Indent 3")
         log2.info("Indent 3")
         log1.info("Indent 2")
       }
