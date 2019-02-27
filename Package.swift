@@ -22,5 +22,6 @@ let package = Package(
       .testTarget(
         name: "LoggerTests",
         dependencies: ["Logger", "Quick", "Nimble"])
-    ]
+    ],
+    swiftLanguageVersions: [.v3, .v4, .v4_2]
 )
