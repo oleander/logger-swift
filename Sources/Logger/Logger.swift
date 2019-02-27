@@ -10,12 +10,6 @@ import Foundation
 import Rainbow
 
 public class Logger {
-  let colors: [Color] = [
-    .black, .red, .green, .yellow, .blue, .magenta, .cyan,
-    .white, .lightBlack, .lightRed, .lightGreen, .lightYellow,
-    .lightBlue, .lightMagenta, .lightCyan, .lightWhite
-  ]
-
   private var errStream = StderrOutputStream()
   private var outStream = StdoutOutputStream()
 
@@ -193,15 +187,10 @@ public class Logger {
     return newLogger
   }
 
-  // public func kv(_ key: Any, _ value: Any) {
-  //   let indent = String(repeating: " ", count: 3)
-  //   let res = stringify(key) + ": " + stringifyWithColor(value).italic
-  //   output(level, [indent + res.dim], status: false)
-  // }
   private func clean(trace: String) -> String {
     let splits = trace
       .split(separator: " ")
-      .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+      .map { String($0).trimmed }
 
     guard splits.count >= 4 else {
       return splits.joined(separator: " ")
@@ -212,7 +201,7 @@ public class Logger {
     params.append("at")
 
     params.append(splits[1])
-    params.append("(\(splits[3]))")
+    params.append("(\(splits[3].truncated(20)))")
 
     return params.joined(separator: " ")
   }
@@ -365,14 +354,6 @@ public class Logger {
 
   private func stringify<T: Error>(_ error: T) -> String {
     return error.localizedDescription
-  }
-
-  private func stringifyWithColor(_ value: Bool) -> String {
-    if value {
-      return "yes".lightGreen.dim
-    } else {
-      return "no".lightRed.dim
-    }
   }
 
   private func stringifyWithColor(_ message: Any) -> String {

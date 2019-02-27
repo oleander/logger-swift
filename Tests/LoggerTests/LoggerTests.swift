@@ -148,5 +148,21 @@ class LoggerTests: QuickSpec {
         log.info("Hello!")
       }
     }
+
+    fdescribe("example") {
+      it("prints") {
+        let log = Logger(.info, time: true)
+
+        log.info("This is info")
+        log.warn("This is warn")
+        log.error("This is error")
+        log.debug("This is debug")
+
+        log.info("This is a table") { table in
+          table.kv("Key 1", "Value 1")
+          table.kv("Key 2", "Value 2")
+        }
+      }
+    }
   }
 }

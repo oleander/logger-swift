@@ -1,2 +1,5 @@
+os: osx
 language: swift
+osx_image: xcode10.1
+before_script: brew install swift
 script: swift test
