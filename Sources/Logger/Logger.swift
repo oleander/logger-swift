@@ -113,8 +113,15 @@ public class Logger {
     output(level, message, icon: icon)
   }
 
-  public func blink(_ message: Any...) {
-    output(.warn, message, blink: true)
+  public func blink(_ message: Any..., tag: String? = nil, icon: Icon? = nil) {
+    ret(Line(
+      level: .warn,
+      content: [message],
+      tag: tag,
+      icon: icon,
+      indentation: indentation,
+      blink: true
+    ).render())
   }
 
   public func todo(_ message: Any...) {
