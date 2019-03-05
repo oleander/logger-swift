@@ -151,6 +151,7 @@ public class Logger {
     ret(Line(
       level: level,
       content: message,
+      time: time,
       icon: icon,
       indentation: indentation
     ))
@@ -160,6 +161,7 @@ public class Logger {
     ret(Line(
       level: .warn,
       content: [message],
+      time: time,
       tags: tags(tag),
       icon: icon,
       indentation: indentation,
@@ -171,6 +173,7 @@ public class Logger {
     ret(Line(
       level: .warn,
       content: message,
+      time: time,
       tags: tags(tag, extra: "TODO"),
       icon: icon,
       indentation: indentation
@@ -181,6 +184,7 @@ public class Logger {
     ret(Line(
       level: .verbose,
       content: message,
+      time: time,
       tags: tags(tag),
       icon: icon,
       indentation: indentation
@@ -209,6 +213,7 @@ public class Logger {
     ret(Line(
       level: .debug,
       content: message,
+      time: time,
       tags: tags(tag),
       icon: icon,
       indentation: indentation
@@ -237,6 +242,7 @@ public class Logger {
     ret(Line(
       level: .warn,
       content: message,
+      time: time,
       tags: tags(tag),
       icon: icon,
       indentation: indentation
@@ -267,6 +273,7 @@ public class Logger {
     ret(Line(
       level: .error,
       content: message,
+      time: time,
       tags: tags(tag),
       icon: icon,
       indentation: indentation
@@ -297,6 +304,7 @@ public class Logger {
     ret(Line(
       level: .warn,
       content: message,
+      time: time,
       tags: tags(tag),
       icon: icon,
       indentation: indentation
@@ -309,6 +317,7 @@ public class Logger {
         ret(Line(
           level: .warn,
           content: [row],
+          time: time,
           status: false,
           indentation: indentation + 1
         ))
@@ -324,6 +333,7 @@ public class Logger {
     ret(Line(
       level: .bug,
       content: message,
+      time: time,
       tags: tags(tag),
       icon: icon,
       indentation: indentation
@@ -341,6 +351,7 @@ public class Logger {
     ret(Line(
       level: .info,
       content: message,
+      time: time,
       tags: tags(tag),
       icon: icon,
       indentation: indentation
@@ -369,6 +380,7 @@ public class Logger {
     ret(Line(
       level: .error,
       content: message,
+      time: time,
       tags: tags(tag),
       icon: icon,
       indentation: indentation

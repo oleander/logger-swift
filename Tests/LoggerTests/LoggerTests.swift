@@ -17,7 +17,7 @@ class LoggerTests: QuickSpec {
     //   }
     // }
 
-    fdescribe("error") {
+    describe("error") {
       it("prints") {
         do {
           throw "This is an error message"
