@@ -11,7 +11,7 @@ let package = Package(
       )
     ],
     dependencies: [
-      .package(url: "https://github.com/onevcat/Rainbow.git", from: "3.0.0"),
+      .package(url: "https://github.com/onevcat/Rainbow.git", from: "3.1.5"),
       .package(url: "https://github.com/Quick/Nimble.git", from: "8.0.2"),
       .package(url: "https://github.com/Quick/Quick.git", from: "2.1.0")
     ],
